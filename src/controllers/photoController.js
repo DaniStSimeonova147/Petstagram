@@ -3,6 +3,13 @@ const photoManager = require('../managers/photoManager');
 
 const { getErrorMessage } = require('../utils/errorHelpers');
 
+router.get('/', async (req, res) => {
+    const photos = await photoManager.getAll().lean();
+
+    res.render('photos', {photos});
+});
+
+
 router.get('/create', (req, res) => {
     res.render('photos/create');
 });
