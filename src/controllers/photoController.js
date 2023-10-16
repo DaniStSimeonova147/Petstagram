@@ -49,5 +49,8 @@ router.get('/:photoId/delete', async (req, res) => {
     }
 });
 
+router.get('/:photoId/edit', async (req, res) => {
+   res.render('photos/edit');
+});
 
 module.exports = router;
