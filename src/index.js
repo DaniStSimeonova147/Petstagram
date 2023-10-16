@@ -32,6 +32,6 @@ app.use(auth);
 //routes
 app.use(routes);
 //global error
-app.use(errorHandler);
+//app.use(errorHandler);
 
 app.listen(3000, console.log(`Server is listening on port 3000...`));
