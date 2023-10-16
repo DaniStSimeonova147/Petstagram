@@ -6,7 +6,7 @@ const { getErrorMessage } = require('../utils/errorHelpers');
 router.get('/', async (req, res) => {
     const photos = await photoManager.getAll().lean();
 
-    res.render('photos', {photos});
+    res.render('photos', { photos });
 });
 
 
@@ -34,8 +34,19 @@ router.get('/:photoId/details', async (req, res) => {
     const photo = await photoManager.getOne(photoId).lean();
     //if do not have user: user?
     const isOwner = req.user?._id == photo.owner._id;
-    
-    res.render('photos/details', {photo, isOwner});
+
+    res.render('photos/details', { photo, isOwner });
+});
+
+router.get('/:photoId/delete', async (req, res) => {
+    const photoId = req.params.photoId;
+    try {
+        await photoManager.delete(photoId);
+
+        res.redirect('/photos');
+    } catch (err) {
+        res.render(`/photos/${photoId}/details`, {error: 'Unsuccessful photo delete!'});
+    }
 });
 
 
