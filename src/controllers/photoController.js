@@ -45,12 +45,26 @@ router.get('/:photoId/delete', async (req, res) => {
 
         res.redirect('/photos');
     } catch (err) {
-        res.render(`/photos/${photoId}/details`, {error: 'Unsuccessful photo delete!'});
+        res.render(`/photos/${photoId}/details`, { error: 'Unsuccessful photo delete!' });
     }
 });
 
 router.get('/:photoId/edit', async (req, res) => {
-   res.render('photos/edit');
+    const photo = await photoManager.getOne(req.params.photoId).lean();
+    res.render('photos/edit', { photo });
+});
+
+router.post('/:photoId/edit', async (req, res) => {
+    const photoId = req.params.photoId;
+    const photoData = req.body;
+
+    try {
+        await photoManager.edit(photoId, photoData);
+
+        res.redirect(`/photos/${photoId}/details`);
+    } catch (err) {
+            res.render('photos/edit', {error: 'Unable to update photo', ...photoData});
+    }
 });
 
 module.exports = router;
